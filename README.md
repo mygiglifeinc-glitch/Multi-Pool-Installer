@@ -38,10 +38,21 @@ All in one installer for your crypto-server needs.
 
 Installation:
 
-Requires a fresh Ubuntu 16.04 or Ubuntu 18.04 installation.
+Requires a fresh Ubuntu 22.04 LTS or Ubuntu 24.04 LTS installation. Ubuntu
+16.04 and 18.04 have reached end-of-life and no longer receive security
+updates, so they are no longer supported.
 
 ```
-curl https://raw.githubusercontent.com/cryptopool-builders/Multi-Pool-Installer/master/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/cryptopool-builders/Multi-Pool-Installer/master/bootstrap.sh | bash
+```
+
+Before piping any script into `bash`, it's good practice to review it
+first. You can download and read it before running it instead:
+
+```
+curl -fsSL -o bootstrap.sh https://raw.githubusercontent.com/cryptopool-builders/Multi-Pool-Installer/master/bootstrap.sh
+less bootstrap.sh
+bash bootstrap.sh
 ```
 
 Update:
@@ -49,7 +60,7 @@ Update:
 When a new release is made public updating is as simple as running the same command as above.
 
 ```
-curl https://raw.githubusercontent.com/cryptopool-builders/Multi-Pool-Installer/master/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/cryptopool-builders/Multi-Pool-Installer/master/bootstrap.sh | bash
 ```
 
 ## ▶️ Usage
@@ -163,18 +174,18 @@ The following two tables show you the perfered server setup for the multi-server
 
 Role | OS Version | Recommended Ram
 :--|:--|:-:
-Web Server | Ubuntu 16.04 or Ubuntu 18.04 | 2GB
-DB & Stratum Server | Ubuntu 16.04 or Ubuntu 18.04 | 4GB
-Daemon Server | Ubuntu 16.04 or Ubuntu 18.04 | 8GB+
+Web Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 2GB
+DB & Stratum Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 4GB
+Daemon Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 8GB+
 
  or
 
 Role | OS Version | Recommended Ram
 :--|:--|:-:
-Web Server | Ubuntu 16.04 or Ubuntu 18.04 | 2GB
-DB Server | Ubuntu 16.04 or Ubuntu 18.04 | 2GB
-Stratum Server | Ubuntu 16.04 or Ubuntu 18.04 | 2GB
-Daemon Server | Ubuntu 16.04 or Ubuntu 18.04 | 8GB+
+Web Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 2GB
+DB Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 2GB
+Stratum Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 2GB
+Daemon Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 8GB+
 
 It is also highly recommended to use a provider that offers private IP's between your servers. If your provider only offers public IP's you must install Wireguard (Installer provided). This will setup a secure VPN connection between your servers for the backend communication.
 
