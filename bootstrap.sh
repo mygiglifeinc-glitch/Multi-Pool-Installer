@@ -22,6 +22,14 @@ TAG="${TAG:-v2.55}"
 REPO_URL="https://github.com/cryptopool-builders/multipool_setup"
 INSTALL_DIR="${HOME}/multipool/install"
 
+# TAG is attacker-controllable (it's read from the environment). Reject
+# anything that isn't a plausible git ref name before it ever reaches git,
+# so a value like "-b" or "--upload-pack=..." can't be parsed as an option.
+if ! [[ "${TAG}" =~ ^[A-Za-z0-9._/-]+$ ]] || [[ "${TAG}" == -* ]]; then
+	echo "Error: TAG '${TAG}' is not a valid ref name." >&2
+	exit 1
+fi
+
 if [ -z "${HOME:-}" ]; then
 	echo "Error: \$HOME is not set; cannot determine the install directory." >&2
 	exit 1
@@ -61,8 +69,7 @@ if [ ! -d "${INSTALL_DIR}" ]; then
 	echo "Downloading MultiPool Installer ${TAG} . . ."
 	if ! git clone \
 		-b "${TAG}" --depth 1 \
-		"${REPO_URL}" \
-		"${INSTALL_DIR}" \
+		-- "${REPO_URL}" "${INSTALL_DIR}" \
 		< /dev/null; then
 		echo "Error: failed to clone ${REPO_URL} at tag ${TAG}." >&2
 		exit 1
