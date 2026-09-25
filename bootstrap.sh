@@ -5,12 +5,12 @@
 #
 # This script is intended to be run like this:
 #
-#   curl -fsSL https://raw.githubusercontent.com/cryptopool-builders/Multi-Pool-Installer/master/bootstrap.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/mygiglifeinc-glitch/Multi-Pool-Installer/master/bootstrap.sh | bash
 #
 # Piping a remote script straight into bash means you are trusting this file
 # sight-unseen. If you'd rather review it first:
 #
-#   curl -fsSL -o bootstrap.sh https://raw.githubusercontent.com/cryptopool-builders/Multi-Pool-Installer/master/bootstrap.sh
+#   curl -fsSL -o bootstrap.sh https://raw.githubusercontent.com/mygiglifeinc-glitch/Multi-Pool-Installer/master/bootstrap.sh
 #   less bootstrap.sh
 #   bash bootstrap.sh
 #
@@ -18,8 +18,9 @@
 
 set -euo pipefail
 
-TAG="${TAG:-v2.55}"
-REPO_URL="https://github.com/cryptopool-builders/multipool_setup"
+# Branch or tag of multipool_setup to install.
+TAG="${TAG:-master}"
+REPO_URL="https://github.com/mygiglifeinc-glitch/multipool_setup"
 INSTALL_DIR="${HOME}/multipool/install"
 
 # TAG is attacker-controllable (it's read from the environment). Reject
@@ -46,13 +47,13 @@ if [ -r /etc/os-release ]; then
 	# shellcheck source=/dev/null
 	. /etc/os-release
 	case "${ID:-}:${VERSION_ID:-}" in
-		ubuntu:22.04|ubuntu:24.04)
+		ubuntu:22.04|ubuntu:24.04|ubuntu:26.04)
 			;;
 		ubuntu:*)
-			echo "Warning: Ubuntu ${VERSION_ID:-unknown} is untested. Ubuntu 22.04 LTS or 24.04 LTS is recommended." >&2
+			echo "Warning: Ubuntu ${VERSION_ID:-unknown} is untested. Ubuntu 22.04, 24.04 or 26.04 LTS is recommended." >&2
 			;;
 		*)
-			echo "Warning: this installer targets Ubuntu LTS releases (22.04/24.04). Detected: ${PRETTY_NAME:-unknown OS}." >&2
+			echo "Warning: this installer targets Ubuntu LTS releases (22.04/24.04/26.04). Detected: ${PRETTY_NAME:-unknown OS}." >&2
 			;;
 	esac
 fi
@@ -71,7 +72,7 @@ if [ ! -d "${INSTALL_DIR}" ]; then
 		-b "${TAG}" --depth 1 \
 		-- "${REPO_URL}" "${INSTALL_DIR}" \
 		< /dev/null; then
-		echo "Error: failed to clone ${REPO_URL} at tag ${TAG}." >&2
+		echo "Error: failed to clone ${REPO_URL} at ${TAG}." >&2
 		exit 1
 	fi
 	echo
@@ -81,13 +82,20 @@ fi
 cd "${INSTALL_DIR}"
 
 # Make sure the invoking user owns the checkout before we touch it.
-${SUDO} chown -R "$(id -u):$(id -g)" "${INSTALL_DIR}/.git"
+${SUDO} chown -R "$(id -u):$(id -g)" "${INSTALL_DIR}"
 
-CURRENT_TAG="$(git describe --tags)"
-if [ "${TAG}" != "${CURRENT_TAG}" ]; then
+# Older releases cloned from github.com/cryptopool-builders; always update
+# from REPO_URL. TAG may be a branch or a tag, so compare commits rather than
+# tag names.
+git remote set-url origin "${REPO_URL}"
+echo "Checking for MultiPool Installer updates (${TAG}) . . ."
+if ! git fetch -q --depth 1 --force origin "${TAG}"; then
+	echo "Error: failed to fetch ${TAG} from ${REPO_URL}." >&2
+	exit 1
+fi
+if [ "$(git rev-parse HEAD)" != "$(git rev-parse FETCH_HEAD)" ]; then
 	echo "Updating MultiPool Installer to ${TAG} . . ."
-	git fetch --depth 1 --force --prune origin tag "${TAG}"
-	if ! git checkout -q "${TAG}"; then
+	if ! git checkout -q --force FETCH_HEAD; then
 		echo "Update failed. Did you modify something in $(pwd)?" >&2
 		exit 1
 	fi

@@ -16,7 +16,7 @@ Steps to reproduce the behavior:
 Please add screenshots to help explain your problem.
 
 **Server Information (please complete the following information):**
- - OS: [e.g. Ubuntu 22.04 LTS]
+ - OS: [e.g. Ubuntu 24.04 LTS]
  - Host: [e.g. Digital Ocean]
 
 **Additional information**
