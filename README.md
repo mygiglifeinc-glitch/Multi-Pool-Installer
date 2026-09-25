@@ -38,19 +38,24 @@ All in one installer for your crypto-server needs.
 
 Installation:
 
-Requires a fresh Ubuntu 22.04 LTS or Ubuntu 24.04 LTS installation. Ubuntu
-16.04 and 18.04 have reached end-of-life and no longer receive security
-updates, so they are no longer supported.
+Requires a fresh 64-bit (x86_64) Ubuntu 22.04, 24.04 or 26.04 LTS
+installation. Ubuntu 16.04, 18.04 and 20.04 have reached end of standard
+support and are no longer supported.
+
+YiiMP is installed with PHP 8.3 (from `ppa:ondrej/php`), Ubuntu's own
+MariaDB, nginx and certbot packages. Advanced install-time options (PHP
+version, installing from a fork or a specific branch/tag) are documented in
+the [multipool_setup README](https://github.com/mygiglifeinc-glitch/multipool_setup#install-time-overrides).
 
 ```
-curl -fsSL https://raw.githubusercontent.com/cryptopool-builders/Multi-Pool-Installer/master/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/mygiglifeinc-glitch/Multi-Pool-Installer/master/bootstrap.sh | bash
 ```
 
 Before piping any script into `bash`, it's good practice to review it
 first. You can download and read it before running it instead:
 
 ```
-curl -fsSL -o bootstrap.sh https://raw.githubusercontent.com/cryptopool-builders/Multi-Pool-Installer/master/bootstrap.sh
+curl -fsSL -o bootstrap.sh https://raw.githubusercontent.com/mygiglifeinc-glitch/Multi-Pool-Installer/master/bootstrap.sh
 less bootstrap.sh
 bash bootstrap.sh
 ```
@@ -60,7 +65,7 @@ Update:
 When a new release is made public updating is as simple as running the same command as above.
 
 ```
-curl -fsSL https://raw.githubusercontent.com/cryptopool-builders/Multi-Pool-Installer/master/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/mygiglifeinc-glitch/Multi-Pool-Installer/master/bootstrap.sh | bash
 ```
 
 ## ▶️ Usage
@@ -174,18 +179,18 @@ The following two tables show you the perfered server setup for the multi-server
 
 Role | OS Version | Recommended Ram
 :--|:--|:-:
-Web Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 2GB
-DB & Stratum Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 4GB
-Daemon Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 8GB+
+Web Server | Ubuntu 22.04, 24.04 or 26.04 LTS | 2GB
+DB & Stratum Server | Ubuntu 22.04, 24.04 or 26.04 LTS | 4GB
+Daemon Server | Ubuntu 22.04, 24.04 or 26.04 LTS | 8GB+
 
  or
 
 Role | OS Version | Recommended Ram
 :--|:--|:-:
-Web Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 2GB
-DB Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 2GB
-Stratum Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 2GB
-Daemon Server | Ubuntu 22.04 LTS or Ubuntu 24.04 LTS | 8GB+
+Web Server | Ubuntu 22.04, 24.04 or 26.04 LTS | 2GB
+DB Server | Ubuntu 22.04, 24.04 or 26.04 LTS | 2GB
+Stratum Server | Ubuntu 22.04, 24.04 or 26.04 LTS | 2GB
+Daemon Server | Ubuntu 22.04, 24.04 or 26.04 LTS | 8GB+
 
 It is also highly recommended to use a provider that offers private IP's between your servers. If your provider only offers public IP's you must install Wireguard (Installer provided). This will setup a secure VPN connection between your servers for the backend communication.
 
